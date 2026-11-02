@@ -36,7 +36,6 @@ By leveraging **graph theory (Neo4j)** and **Bayesian attack progression models*
 | ![Asset Inventory](docs/screenshots/05_asset_inventory.png) | **Comprehensive Asset Inventory & Risk Profiler**<br>Detailed registry of all physical, virtual, and cloud assets with live filtering across criticality, risk tiers, departments, open ports, and operating systems. |
 | ![Vulnerability Intelligence](docs/screenshots/06_vulnerability_intelligence.png) | **Vulnerability & CVE Posture Engine**<br>Aggregated CVE tracking enriched with CVSS v3/v4 metrics, EPSS (Exploit Prediction Scoring System), affected asset mappings, and vendor remediation bulletins. |
 | ![Security Findings](docs/screenshots/07_security_findings.png) | **Remediation Findings & MITRE ATT&CK Mapping**<br>Actionable security tickets categorized by severity, mapped directly to MITRE ATT&CK tactics (Initial Access, Credential Access, Lateral Movement) with SLA tracking. |
-| ![Threat Intelligence](docs/screenshots/08_threat_intelligence.png) | **Proactive Threat Intelligence Feeds**<br>Continuous correlation against CISA Known Exploited Vulnerabilities (KEV), threat actor campaigns (e.g., Storm-1575, FIN7), and real-time weaponization feeds. |
 | ![Zero Trust Login Portal](docs/screenshots/01_login_portal.png) | **Role-Based Zero-Trust Authentication Portal**<br>JWT-authenticated access control with session isolation and role-based permissions (SecOps Analyst, Incident Responder, Admin). |
 
 ---
