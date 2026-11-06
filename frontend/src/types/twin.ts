@@ -110,6 +110,28 @@ export interface AttackPathResponse {
   paths: AttackPath[];
 }
 
+export interface BlastRadiusNode {
+  id: string;
+  name: string;
+  asset_type: AssetType;
+  criticality: Criticality;
+  risk_score: number;
+  risk_level: RiskLevel;
+  hops_away: number;
+  compromise_probability: number;
+}
+
+export interface BlastRadiusResponse {
+  source_id: string;
+  source_name: string;
+  affected_nodes: BlastRadiusNode[];
+  total_affected: number;
+  critical_assets_compromised: number;
+  crown_jewel_at_risk: boolean;
+  estimated_impact_score: number;
+  recommended_mitigation: string;
+}
+
 // Human-readable labels for relationship types.
 export const RELATIONSHIP_LABELS: Record<RelationshipType, string> = {
   USES: "Uses",
@@ -119,3 +141,4 @@ export const RELATIONSHIP_LABELS: Record<RelationshipType, string> = {
   PROTECTS: "Protects",
   MEMBER_OF: "Member Of",
 };
+

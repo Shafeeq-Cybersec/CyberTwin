@@ -14,13 +14,14 @@ from app.models.asset import Asset
 from app.models.user import User
 from app.schemas.twin import (
     AttackPathResponse,
+    BlastRadiusResponse,
     Graph,
     RelationshipCreate,
     RelationshipType,
     RelationshipUpdate,
     RelationshipView,
 )
-from app.services import asset_service, attack_path_service, twin_service
+from app.services import asset_service, attack_path_service, blast_radius_service, twin_service
 from app.services.relationship_rules import validate_relationship
 
 router = APIRouter(prefix="/twin", tags=["twin"])
@@ -78,6 +79,18 @@ async def get_attack_paths(
         db, driver, target_id=target_id, max_length=max_length
     )
     return AttackPathResponse(paths=paths)
+
+
+@router.get("/blast-radius/{asset_id}", response_model=BlastRadiusResponse)
+async def get_blast_radius(
+    asset_id: uuid.UUID,
+    db: AsyncSession = Depends(get_db),
+    driver: AsyncDriver = Depends(get_neo4j),
+    _: User = Depends(get_current_user),
+) -> BlastRadiusResponse:
+    """Simulate compromise on an asset and compute downstream blast radius."""
+    await _require_asset(db, asset_id)
+    return await blast_radius_service.calculate_blast_radius(db, driver, asset_id)
 
 
 @router.get("/relationship-rules")
