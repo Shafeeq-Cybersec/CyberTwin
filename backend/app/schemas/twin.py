@@ -121,3 +121,33 @@ class AttackPath(BaseModel):
 
 class AttackPathResponse(BaseModel):
     paths: list[AttackPath]
+
+
+# --- Blast Radius Analysis ---
+
+
+class BlastRadiusNode(BaseModel):
+    """An asset affected in a blast radius simulation."""
+
+    id: uuid.UUID
+    name: str
+    asset_type: AssetType
+    criticality: Criticality
+    risk_score: int
+    risk_level: RiskLevel
+    hops_away: int
+    compromise_probability: int  # 0-100%
+
+
+class BlastRadiusResponse(BaseModel):
+    """Result of a simulated compromise on an asset."""
+
+    source_id: uuid.UUID
+    source_name: str
+    affected_nodes: list[BlastRadiusNode]
+    total_affected: int
+    critical_assets_compromised: int
+    crown_jewel_at_risk: bool
+    estimated_impact_score: int  # 0-100 aggregated blast score
+    recommended_mitigation: str
+

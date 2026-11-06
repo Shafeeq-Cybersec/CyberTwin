@@ -145,6 +145,7 @@ Secure application access through identity-aware authentication and authorizatio
 | ![SOC Dashboard](docs/screenshots/02_soc_dashboard.png) | **SOC Dashboard** | Enterprise security overview with organizational risk indicators, critical asset counts, exposure metrics, and risk distribution. |
 | ![Digital Twin Graph](docs/screenshots/03_digital_twin_graph.png) | **Digital Twin Graph** | Interactive infrastructure topology displaying asset relationships, dependencies, and risk-based visual indicators. |
 | ![Attack Path Analysis](docs/screenshots/04_attack_path_analysis.png) | **Attack Path Analysis** | Graph-based analysis of potential compromise routes and critical infrastructure chokepoints. |
+| ![Blast Radius Simulation](docs/screenshots/09_blast_radius_simulation.png) | **Blast Radius & Cascading Failure Simulator** | Evaluates cascading compromise propagation, calculates multi-hop breach probabilities, flags crown-jewel exposure, and generates automated containment plans. |
 | ![Asset Inventory](docs/screenshots/05_asset_inventory.png) | **Asset Inventory** | Centralized asset registry with filtering by criticality, risk, department, operating system, and exposure. |
 | ![Vulnerability Intelligence](docs/screenshots/06_vulnerability_intelligence.png) | **Vulnerability Intelligence** | CVE tracking with CVSS, EPSS, KEV correlation, affected assets, and remediation information. |
 | ![Security Findings](docs/screenshots/07_security_findings.png) | **Security Findings** | Actionable security findings with severity classification, MITRE ATT&CK mapping, and remediation tracking. |
@@ -326,7 +327,7 @@ The following roadmap represents planned development milestones. Completion shou
 - [x] Initial asset inventory interface
 - [x] Complete Neo4j infrastructure relationship engine
 - [x] Complete graph-based attack path analysis
-- [ ] Validate blast radius calculations
+- [x] Validate blast radius calculations
 - [ ] Integrate live vulnerability intelligence feeds
 - [x] Implement contextual risk scoring
 - [x] Complete security findings and investigation workflows
@@ -388,3 +389,4 @@ Developed by **Shafeeq S**
 [GitHub Repository](https://github.com/Shafeeq-Cybersec/CyberTwin)
 
 </div>
+

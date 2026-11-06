@@ -35,6 +35,9 @@ import type {
   RelationshipView,
 } from "../types/twin";
 import AttackPathPanel from "../components/twin/AttackPathPanel";
+import BlastRadiusModal from "../components/twin/BlastRadiusModal";
+import type { BlastRadiusResponse } from "../types/twin";
+import { Flame } from "lucide-react";
 import type { AssetType, Criticality } from "../types/asset";
 import {
   ASSET_TYPE_LABELS,
@@ -101,7 +104,25 @@ export default function DigitalTwin() {
   const [attackOpen, setAttackOpen] = useState(false);
   const [attackPaths, setAttackPaths] = useState<AttackPath[]>([]);
   const [attackLoading, setAttackLoading] = useState(false);
-  const [selectedPath, setSelectedPath] = useState<AttackPath | null>(null);
+    const [selectedPath, setSelectedPath] = useState<AttackPath | null>(null);
+
+  // Blast radius state
+  const [blastOpen, setBlastOpen] = useState(false);
+  const [blastData, setBlastData] = useState<BlastRadiusResponse | null>(null);
+  const [blastLoading, setBlastLoading] = useState(false);
+
+  const triggerBlastRadius = async (assetId: string) => {
+    setBlastOpen(true);
+    setBlastLoading(true);
+    try {
+      const res = await twinApi.getBlastRadius(assetId);
+      setBlastData(res);
+    } catch {
+      setBlastData(null);
+    } finally {
+      setBlastLoading(false);
+    }
+  };
 
   // --- Data fetching --------------------------------------------------------
 
@@ -463,8 +484,14 @@ export default function DigitalTwin() {
               </div>
             </dl>
             <Link to={`/assets/${selected.id}`} className="mt-4 flex items-center justify-center gap-2 btn-primary w-full">
-              View Full Details <ExternalLink className="w-4 h-4" />
+                            View Full Details <ExternalLink className="w-4 h-4" />
             </Link>
+            <button
+              onClick={() => triggerBlastRadius(selected.id)}
+              className="mt-2 flex items-center justify-center gap-2 w-full py-2 px-3 rounded-lg bg-severity-critical/15 text-severity-critical hover:bg-severity-critical/25 border border-severity-critical/30 text-xs font-semibold transition"
+            >
+              <Flame className="w-3.5 h-3.5" /> Simulate Blast Radius
+            </button>
           </div>
         )}
 
@@ -527,8 +554,22 @@ export default function DigitalTwin() {
         }
         confirmLabel="Delete"
         onConfirm={confirmDelete}
-        onClose={() => setDeletingRel(null)}
+                onClose={() => setDeletingRel(null)}
       />
+
+      {/* Blast Radius Simulation Modal */}
+      {blastOpen && (
+        <BlastRadiusModal
+          data={blastData}
+          loading={blastLoading}
+          onClose={() => setBlastOpen(false)}
+        />
+      )}
     </div>
   );
 }
+
+
+
+
+

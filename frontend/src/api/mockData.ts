@@ -603,8 +603,33 @@ export function handleMockRequest(config: InternalAxiosRequestConfig): AxiosResp
   if (url.includes("/twin/relationship-rules")) {
     return makeResponse(MOCK_RELATIONSHIP_RULES);
   }
-  if (url.includes("/twin/attack-paths")) {
+    if (url.includes("/twin/attack-paths")) {
     return makeResponse(MOCK_ATTACK_PATHS);
+  }
+  if (url.includes("/twin/blast-radius/")) {
+    const assetId = url.split("/twin/blast-radius/")[1]?.split("?")[0];
+    const srcAsset = MOCK_ASSETS.find(a => a.id === assetId) || MOCK_ASSETS[0];
+    const downstream = MOCK_ASSETS.filter(a => a.id !== srcAsset.id);
+    const affected = downstream.slice(0, 3).map((a, idx) => ({
+      id: a.id,
+      name: a.name,
+      asset_type: a.asset_type,
+      criticality: a.criticality,
+      risk_score: a.risk?.score ?? 60,
+      risk_level: a.risk?.level ?? "yellow",
+      hops_away: idx + 1,
+      compromise_probability: Math.max(25, 90 - (idx * 25)),
+    }));
+    return makeResponse({
+      source_id: srcAsset.id,
+      source_name: srcAsset.name,
+      affected_nodes: affected,
+      total_affected: affected.length,
+      critical_assets_compromised: affected.filter(a => a.criticality === "critical").length,
+      crown_jewel_at_risk: affected.some(a => a.criticality === "critical" || a.asset_type === "database"),
+      estimated_impact_score: Math.min(100, Math.round((srcAsset.risk?.score ?? 50) * 0.4 + 55)),
+      recommended_mitigation: `Compromise of ${srcAsset.name} exposes ${affected.length} connected workloads. Enforce network micro-segmentation and revoke service principal tokens immediately.`,
+    });
   }
 
   // Assets
@@ -673,3 +698,4 @@ export function handleMockRequest(config: InternalAxiosRequestConfig): AxiosResp
 
   return null;
 }
+

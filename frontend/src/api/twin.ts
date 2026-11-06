@@ -1,6 +1,7 @@
 import apiClient from "./client";
 import type {
   AttackPathResponse,
+  BlastRadiusResponse,
   Graph,
   RelationshipCreate,
   RelationshipRules,
@@ -55,3 +56,10 @@ export async function getAttackPaths(targetId?: string): Promise<AttackPathRespo
   const { data } = await apiClient.get<AttackPathResponse>("/twin/attack-paths", { params });
   return data;
 }
+
+/** Simulate compromise on an asset and calculate cascading blast radius. */
+export async function getBlastRadius(assetId: string): Promise<BlastRadiusResponse> {
+  const { data } = await apiClient.get<BlastRadiusResponse>(`/twin/blast-radius/${encodeURIComponent(assetId)}`);
+  return data;
+}
+
