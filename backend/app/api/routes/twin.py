@@ -205,3 +205,18 @@ async def ensure_node(
     """Register an asset as a standalone node in the twin (no edges yet)."""
     await _require_asset(db, asset_id)
     await twin_service.ensure_asset_node(driver, asset_id)
+
+@router.get("/chokepoints/optimal", status_code=status.HTTP_200_OK)
+async def get_optimal_chokepoints(
+    db: AsyncSession = Depends(get_db),
+    driver: AsyncDriver = Depends(get_neo4j),
+    _: User = Depends(get_current_user),
+) -> dict:
+    """Calculate the minimum-cut bottleneck remediations for the organization."""
+    from app.services.chokepoint_optimizer import compute_optimal_remediations
+    paths_res = await attack_path_service.analyze_attack_paths(db, driver)
+    assets_raw = await asset_service.list_all_raw(db) if hasattr(asset_service, "list_all_raw") else []
+    assets_lookup = {str(a.id): {"name": a.name, "risk_score": 50} for a in assets_raw}
+    paths_dicts = [p.model_dump() for p in paths_res]
+    optimal = compute_optimal_remediations(paths_dicts, assets_lookup)
+    return {"total_paths": len(paths_dicts), "optimal_controls": optimal}
