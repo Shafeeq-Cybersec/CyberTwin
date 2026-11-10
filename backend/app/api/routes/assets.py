@@ -104,3 +104,17 @@ async def delete_asset(
     """Delete an asset."""
     asset = await _get_or_404(db, asset_id)
     await asset_service.delete_asset(db, asset)
+
+@router.post("/import/nmap", status_code=status.HTTP_200_OK)
+async def import_nmap_scan(
+    xml_data: str,
+    db: AsyncSession = Depends(get_db),
+    _: User = Depends(get_current_user),
+) -> dict:
+    """Ingest Nmap scanner XML output and populate the asset inventory."""
+    from app.services.nmap_importer import parse_nmap_xml
+    try:
+        discovered = parse_nmap_xml(xml_data)
+        return {"imported_count": len(discovered), "assets": discovered}
+    except Exception as exc:
+        raise HTTPException(status.HTTP_400_BAD_REQUEST, detail=f"Failed to parse Nmap XML: {exc}")
