@@ -33,9 +33,10 @@ async def calculate_blast_radius(
     if not source_asset:
         raise ValueError(f"Asset {source_id} not found")
 
-    # 2. Query Neo4j for reachable paths up to max_hops
-    cypher = """
-    MATCH path = (src:Asset {id: $source_id})-[*1..4]->(target:Asset)
+    # 2. Query Neo4j for reachable paths up to max_hops (clamped between 1 and 10)
+    clamped_hops = max(1, min(max_hops, 10))
+    cypher = f"""
+    MATCH path = (src:Asset {{id: $source_id}})-[*1..{clamped_hops}]->(target:Asset)
     WHERE src <> target
     WITH target.id AS target_id, min(length(path)) AS hops
     RETURN target_id, hops
