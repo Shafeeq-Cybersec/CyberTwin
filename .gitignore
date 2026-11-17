@@ -1,12 +1,19 @@
-# Node
+# Node & Frontend
 node_modules/
 dist/
+.vite/
+*.tsbuildinfo
 
 # Python
 __pycache__/
 *.pyc
+*.pyo
+*.pyd
 .venv/
 venv/
+.pytest_cache/
+.coverage
+htmlcov/
 
 # Environment secrets
 .env
@@ -16,3 +23,4 @@ venv/
 .vscode/
 .idea/
 Thumbs.db
+.DS_Store
